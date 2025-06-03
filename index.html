@@ -1,0 +1,857 @@
+<!DOctYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviation Training Courses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html, body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(to right, #293B9010, #293B9070);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        /* Container for all cards */
+        .cards-wrapper {
+            width: min(90vw, 1200px);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        /* Glass Card Styles */
+        .glass-card {
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Header with background image and overlay */
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            color: #FFFFFF;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Overlay to ensure text visibility */
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(41, 59, 144, 0.8); /* Semi-transparent overlay matching the original color */
+            z-index: 1;
+        }
+
+        .card-header h1 {
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 0.02em;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .table-container {
+            padding: 0;
+            background: #ffffff;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        colgroup col:nth-child(1) { width: 8%; }
+        colgroup col:nth-child(2) { width: 42%; }
+        colgroup col:nth-child(3) { width: 15%; }
+        colgroup col:nth-child(4) { width: 35%; }
+
+        thead {
+            background: #293B90; /* Changed from orange to the header color */
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        th {
+            font-weight: 600;
+            color: white;
+            font-size: clamp(0.8125rem, 1.25vw, 0.9375rem);
+            position: relative;
+        }
+
+        th:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 60%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8fafd;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        tbody tr:hover {
+            background-color: #e6f0ff; /* Lighter version of main blue color */
+            transform: translateX(3px);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        td {
+            font-size: clamp(0.8125rem, 1.25vw, 0.9375rem);
+            font-weight: 400;
+            color: #333;
+        }
+
+        .date-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .date-item {
+            padding: 0.5rem 0;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .date-item:hover {
+            color: #F26129;
+        }
+
+        .date-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0; /* Grey separator line */
+        }
+
+        .on-request {
+            color: #e53935;
+            font-weight: 500;
+        }
+
+        /* Highlight important rows */
+        tr.highlight {
+            background-color: #fff5f5;
+            border-left: 5px solid #e53935;
+        }
+
+        /* Scrollbar styling */
+        .table-container::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(242, 97, 41, 0.1);
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: rgba(41, 59, 144, 0.3);
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(41, 59, 144, 0.5);
+        }
+
+        /* Simple separator line */
+        .separator {
+            width: 100%;
+            height: 1px;
+            background: #ddd;
+            margin: 3rem auto 2rem auto;
+            overflow: hidden;
+        }
+
+        /* Accreditation list styles */
+        .accreditations {
+            width: min(90vw, 1200px);
+            margin: 1rem 0 0;
+            padding: 1.5rem;
+            background: #293B90;
+            color: white;
+        }
+
+        .accreditations h2 {
+            color: white;
+            font-size: 1.125rem;
+            text-align: left;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .accreditations ul {
+            list-style-type: none;
+            margin-bottom: 1.5rem;
+            padding: 0;
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .accreditations li {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.9);
+            padding-left: 1rem;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .accreditations li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #F26129;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* Footer with contact info styles */
+        .footer {
+            width: min(90vw, 1200px);
+            margin-top: 0;
+            padding: 1.5rem;
+            background: white;
+            color: #293B90;
+f        }
+
+        .footer h3 {
+            color: #F26129;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .contact-info {
+            font-size: 0.8125rem;
+            line-height: 1.5;
+            color: grey;
+            text-align: center;
+            padding-bottom: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .cards-wrapper {
+                gap: 1.5rem;
+            }
+            
+            .card-header {
+                padding: 1rem;
+            }
+            
+            .card-header h1 {
+                font-size: 1.125rem;
+            }
+            
+            th, td {
+                padding: 12px 14px;
+                font-size: 0.8125rem;
+            }
+            
+            colgroup col:nth-child(1) { width: 10%; }
+            colgroup col:nth-child(2) { width: 40%; }
+            colgroup col:nth-child(3) { width: 20%; }
+            colgroup col:nth-child(4) { width: 30%; }
+            
+            .accreditations ul {
+                grid-template-columns: 1fr;
+            }
+            
+            .accreditations,
+            .footer {
+                padding: 1.25rem;
+            }
+        }
+/* Add this to your existing style section */
+
+/* Table header separator lines - show only on wide screens */
+@media (min-width: 769px) {
+    th:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 60%;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Hide separator lines on mobile */
+@media (max-width: 768px) {
+    th:not(:last-child)::after {
+        display: none;
+    }
+}
+
+/* Adjust the card header white stroke */
+.card-header {
+    border-bottom: 0.5px solid white;
+    z-index: 1; /* Ensure it appears above the background overlay */
+}
+
+/* Alternative approach using border-bottom on th elements */
+thead th {
+    border-bottom: 1px solid #F26129 !important;
+    box-shadow: 0 0.5px 0 0 #F26129; /* Fallback for browsers that don't support sub-pixel borders */
+}
+
+/* For better visibility on mobile */
+@media (max-width: 768px) {
+    thead th {
+        border-bottom-width: 1px !important;
+    }
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2em 0;
+    margin-bottom: 1em;
+}
+
+.logo-container svg {
+    height: 4em; /* Adjust this value to change logo size */
+    width: auto;
+    max-width: 100%;
+}
+
+    </style>
+</head>
+<body>
+    <div style="text-align: center; padding: 2rem 1rem 0 2rem;">
+        <style>
+            /* Mobile-first color and typography */
+            .training-schedule {
+                color: #293B90 !important; /* Solid equivalent of #00336697 */
+                opacity: 0.8;
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin: 0.5rem 0;
+            }
+            
+            /* Desktop enhancement */
+            @media (min-width: 769px) {
+                .training-schedule {
+                    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+                }
+            }
+            
+            /* Mobile adjustments */
+            @media (max-width: 480px) {
+                .training-schedule {
+                    font-size: 1.1rem;
+                    margin-top: 0.4rem;
+                }
+            }
+        </style>
+        
+        <h1 style="font-size: clamp(1.5rem, 4vw, 2rem);
+                   margin: 0;
+                   font-weight: 600;
+                   line-height: 1.3;
+                   color: #293B90 !important;">
+            CIVIL AVIATION TRAINING CENTER (TANZANIA)
+        </h1>
+        <p>&nbsp</p>        
+        <p class="training-schedule">
+            TRAINING SCHEDULE 2025/2026
+        </p>
+    </div>    <div class="cards-wrapper" id="cardsContainer">
+        <!-- Cards will be inserted here by JavaScript -->
+    </div>
+</body>
+    <!-- Simple separator line -->
+    <div class="separator"></div>
+
+
+
+    <!-- Accreditation list -->
+    <div class="accreditations">
+        <h2>Accreditations</h2>
+        <ul>
+            <li>ISO 9001: 2015 Certified</li>
+            <li>ICAO TRAINAIR PLUS Gold Member</li>
+            <li>Full accredited by National Council for Technical Education (NACTE)</li>
+            <li>Approved Training Organization by Tanzania Civil Aviation Authority (TCAA)</li>
+            <li>Council Member of African Aviation Training Organization (AATO)</li>
+            <li>Corporate member of Chartered Institute of Logistics and Transport (CILT)</li>
+        </ul>
+    </div>
+
+    <!-- <div class="logo-container">        
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 45.67 19.82" style="enable-background:new 0 0 45.67 19.82;" xml:space="preserve">
+             <style type="text/css">
+	.st0{fill:#F15C24;}
+	.st1{fill:#293B90;}
+	.st2{fill:none;}
+</style>
+<g>
+	<path class="st0" d="M457.21,98.13c-0.84,0.99-2.29,2.94-4.22,4.87c-1.21,1.23-2.61,2.45-4.17,3.43c-0.77,0.49-1.58,0.92-2.44,1.29
+		c-0.67,0.29-1.38,0.53-2.11,0.72c-0.98,0.25-1.93,0.43-2.82,0.55c-1.26,0.18-2.43,0.24-3.46,0.24h-0.01l1.35-2.45
+		c1.08-0.04,2.28-0.15,3.55-0.38c0.01,0,0.01,0,0.01,0c0.57-0.11,1.15-0.23,1.75-0.39c0.23-0.05,0.46-0.12,0.68-0.19
+		c0.94-0.26,1.82-0.58,2.65-0.93c1.93-0.8,3.61-1.84,5.02-2.88C454.92,100.57,456.35,99.09,457.21,98.13z"/>
+	<g>
+		<path class="st1" d="M431.96,109.75c-0.9,0-1.74-0.14-2.5-0.43c-0.77-0.29-1.43-0.7-1.99-1.23s-1-1.16-1.31-1.88
+			c-0.32-0.72-0.47-1.52-0.47-2.39s0.16-1.67,0.47-2.39s0.75-1.35,1.31-1.88c0.56-0.53,1.22-0.94,1.99-1.23
+			c0.77-0.29,1.6-0.43,2.5-0.43c1.05,0,2,0.18,2.83,0.55c0.83,0.37,1.52,0.9,2.08,1.6l-2.06,1.86c-0.37-0.43-0.77-0.77-1.22-1
+			s-0.93-0.34-1.48-0.34c-0.47,0-0.9,0.08-1.29,0.23c-0.39,0.15-0.73,0.37-1,0.66s-0.5,0.63-0.65,1.04
+			c-0.16,0.4-0.24,0.85-0.24,1.34s0.08,0.94,0.24,1.34s0.38,0.75,0.65,1.04s0.61,0.51,1,0.66c0.39,0.15,0.82,0.23,1.29,0.23
+			c0.54,0,1.04-0.11,1.48-0.34c0.44-0.23,0.85-0.56,1.22-1l2.06,1.86c-0.55,0.68-1.25,1.21-2.08,1.59
+			C433.96,109.56,433.02,109.75,431.96,109.75z"/>
+		<path class="st1" d="M452.99,102.01V103c1.93-1.93,3.38-3.88,4.22-4.87C456.35,99.09,454.92,100.57,452.99,102.01z M457.18,98.1
+			l0.03,0.03l0.05-0.03H457.18z M457.81,98.1l-4.82,5.61v5.81h3.23v-8.86h3.49V98.1H457.81z M456.56,98.1h-7.08v2.56h3.51v0.71
+			C454.24,100.42,455.44,99.32,456.56,98.1z"/>
+		<path class="st1" d="M466.44,109.75c-0.9,0-1.74-0.14-2.5-0.43c-0.77-0.29-1.43-0.7-1.99-1.23s-1-1.16-1.31-1.88
+			c-0.32-0.72-0.47-1.52-0.47-2.39s0.16-1.67,0.47-2.39s0.75-1.35,1.31-1.88c0.56-0.53,1.22-0.94,1.99-1.23
+			c0.77-0.29,1.6-0.43,2.5-0.43c1.05,0,2,0.18,2.83,0.55c0.83,0.37,1.52,0.9,2.08,1.6l-2.06,1.86c-0.37-0.43-0.77-0.77-1.22-1
+			s-0.93-0.34-1.48-0.34c-0.47,0-0.9,0.08-1.29,0.23c-0.39,0.15-0.73,0.37-1,0.66s-0.5,0.63-0.65,1.04
+			c-0.16,0.4-0.24,0.85-0.24,1.34s0.08,0.94,0.24,1.34s0.38,0.75,0.65,1.04s0.61,0.51,1,0.66c0.39,0.15,0.82,0.23,1.29,0.23
+			c0.54,0,1.04-0.11,1.48-0.34c0.44-0.23,0.85-0.56,1.22-1l2.06,1.86c-0.55,0.68-1.25,1.21-2.08,1.59
+			C468.44,109.56,467.49,109.75,466.44,109.75z"/>
+	</g>
+	<g>
+		<path class="st1" d="M450.37,109.23h-3.16l-0.59-1.07c0.85-0.37,1.66-0.8,2.44-1.29L450.37,109.23z"/>
+		<path class="st1" d="M447.73,104.45c-0.87,0.36-1.71,0.65-2.56,0.89c-0.03,0.01-0.07,0.02-0.1,0.03l-0.8-1.46l-1.06,1.92
+			c-0.14,0.03-0.28,0.05-0.42,0.08c-1.02,0.18-2.09,0.31-3.17,0.35l2.97-5.37l1.55-2.8h0.07l1.64,2.95L447.73,104.45z"/>
+		<line class="st2" x1="457.81" y1="98.1" x2="457.26" y2="98.1"/>
+		<path class="st0" d="M457.21,98.13c-0.84,0.99-2.29,2.94-4.22,4.87c-1.21,1.23-2.61,2.45-4.17,3.43
+			c-0.77,0.49-1.58,0.92-2.44,1.29c-0.67,0.29-1.38,0.53-2.11,0.72c-0.98,0.25-1.93,0.43-2.82,0.55c-1.26,0.18-2.43,0.24-3.46,0.24
+			h-0.01l1.35-2.45c1.08-0.04,2.28-0.15,3.55-0.38c0.01,0,0.01,0,0.01,0c0.57-0.11,1.15-0.23,1.75-0.39
+			c0.23-0.05,0.46-0.12,0.68-0.19c0.94-0.26,1.82-0.58,2.65-0.93c1.93-0.8,3.61-1.84,5.02-2.88
+			C454.92,100.57,456.35,99.09,457.21,98.13z"/>
+	</g>
+	<g>
+		<path class="st0" d="M458.97,93.81l3.11,2.35c0.2,0.15,0.44,0.23,0.69,0.23c0.55-0.04,1.11-0.08,1.66-0.12
+			c-1.78-1.09-3.57-2.19-5.35-3.28L458.97,93.81z"/>
+		<path class="st0" d="M464.82,94.77c0-0.19-0.61-0.43-0.61-0.43c-0.31-0.22-0.72-0.24-1.05-0.06l-4.72,2.57l-0.64,0.02l-0.84-0.73
+			l-0.02,0.6l0.57,0.64l0.96,0.16L464.82,94.77"/>
+	</g>
+	<g>
+		<path class="st0" d="M427.76,112.81v-1.03h-0.41v-0.37h1.29v0.37h-0.41v1.03H427.76z"/>
+		<path class="st0" d="M432.96,112.81l0.61-1.4h0.46l0.61,1.4h-0.49l-0.45-1.18h0.18l-0.45,1.18H432.96z M433.33,112.56l0.12-0.34
+			h0.64l0.12,0.34H433.33z"/>
+		<path class="st0" d="M439.15,112.81v-1.4h0.39l0.71,0.85h-0.18v-0.85h0.46v1.4h-0.39l-0.71-0.85h0.18v0.85H439.15z"/>
+		<path class="st0" d="M445.12,112.81v-0.29l0.78-0.91l0.06,0.16h-0.82v-0.37h1.23v0.29l-0.78,0.91l-0.06-0.16h0.87v0.37H445.12z"/>
+		<path class="st0" d="M450.82,112.81l0.61-1.4h0.46l0.61,1.4h-0.49l-0.45-1.18h0.18l-0.45,1.18H450.82z M451.18,112.56l0.12-0.34
+			h0.64l0.12,0.34H451.18z"/>
+		<path class="st0" d="M457,112.81v-1.4h0.39l0.71,0.85h-0.18v-0.85h0.46v1.4h-0.39l-0.71-0.85h0.18v0.85H457z"/>
+		<path class="st0" d="M463.03,112.81v-1.4h0.47v1.4H463.03z"/>
+		<path class="st0" d="M468,112.81l0.61-1.4h0.46l0.61,1.4h-0.49l-0.45-1.18h0.18l-0.45,1.18H468z M468.36,112.56l0.12-0.34h0.64
+			l0.12,0.34H468.36z"/>
+	</g>
+</g>
+<g>
+	<path class="st0" d="M31.52,5.14c-0.84,0.99-2.29,2.94-4.22,4.87c-1.21,1.23-2.61,2.45-4.17,3.43c-0.77,0.49-1.58,0.92-2.44,1.29
+		c-0.67,0.29-1.38,0.53-2.11,0.72c-0.98,0.25-1.93,0.43-2.82,0.55c-1.26,0.18-2.43,0.24-3.46,0.24h-0.01l1.35-2.45
+		c1.08-0.04,2.28-0.15,3.55-0.38c0.01,0,0.01,0,0.01,0c0.57-0.11,1.15-0.23,1.75-0.39c0.23-0.05,0.46-0.12,0.68-0.19
+		c0.94-0.26,1.82-0.58,2.65-0.93c1.93-0.8,3.61-1.84,5.02-2.88C29.23,7.58,30.66,6.1,31.52,5.14z"/>
+	<g>
+		<path class="st1" d="M6.28,16.76c-0.9,0-1.74-0.14-2.5-0.43c-0.77-0.29-1.43-0.7-1.99-1.23s-1-1.16-1.31-1.88
+			C0.16,12.49,0,11.69,0,10.82s0.16-1.67,0.47-2.39s0.75-1.35,1.31-1.88C2.35,6.01,3.01,5.6,3.78,5.32c0.77-0.29,1.6-0.43,2.5-0.43
+			c1.05,0,2,0.18,2.83,0.55c0.83,0.37,1.52,0.9,2.08,1.6L9.14,8.9c-0.37-0.43-0.77-0.77-1.22-1C7.48,7.67,6.99,7.56,6.44,7.56
+			c-0.47,0-0.9,0.08-1.29,0.23c-0.39,0.15-0.73,0.37-1,0.66S3.66,9.08,3.5,9.48c-0.16,0.4-0.24,0.85-0.24,1.34s0.08,0.94,0.24,1.34
+			s0.38,0.75,0.65,1.04s0.61,0.51,1,0.66c0.39,0.15,0.82,0.23,1.29,0.23c0.54,0,1.04-0.11,1.48-0.34c0.44-0.23,0.85-0.56,1.22-1
+			l2.06,1.86c-0.55,0.68-1.25,1.21-2.08,1.59C8.28,16.57,7.34,16.76,6.28,16.76z"/>
+		<path class="st1" d="M27.3,9.02v0.99c1.93-1.93,3.38-3.88,4.22-4.87C30.66,6.1,29.23,7.58,27.3,9.02z M31.49,5.11l0.03,0.03
+			l0.05-0.03H31.49z M32.12,5.11l-4.82,5.61v5.81h3.23V7.67h3.49V5.11H32.12z M30.87,5.11h-7.08v2.56h3.51v0.71
+			C28.55,7.43,29.75,6.33,30.87,5.11z"/>
+		<path class="st1" d="M40.76,16.76c-0.9,0-1.74-0.14-2.5-0.43c-0.77-0.29-1.43-0.7-1.99-1.23s-1-1.16-1.31-1.88
+			c-0.32-0.72-0.47-1.52-0.47-2.39s0.16-1.67,0.47-2.39s0.75-1.35,1.31-1.88c0.56-0.53,1.22-0.94,1.99-1.23
+			c0.77-0.29,1.6-0.43,2.5-0.43c1.05,0,2,0.18,2.83,0.55c0.83,0.37,1.52,0.9,2.08,1.6L43.61,8.9c-0.37-0.43-0.77-0.77-1.22-1
+			c-0.44-0.23-0.93-0.34-1.48-0.34c-0.47,0-0.9,0.08-1.29,0.23c-0.39,0.15-0.73,0.37-1,0.66s-0.5,0.63-0.65,1.04
+			c-0.16,0.4-0.24,0.85-0.24,1.34s0.08,0.94,0.24,1.34s0.38,0.75,0.65,1.04s0.61,0.51,1,0.66c0.39,0.15,0.82,0.23,1.29,0.23
+			c0.54,0,1.04-0.11,1.48-0.34c0.44-0.23,0.85-0.56,1.22-1l2.06,1.86c-0.55,0.68-1.25,1.21-2.08,1.59
+			C42.76,16.57,41.81,16.76,40.76,16.76z"/>
+	</g>
+	<g>
+		<path class="st1" d="M24.68,16.24h-3.16l-0.59-1.07c0.85-0.37,1.66-0.8,2.44-1.29L24.68,16.24z"/>
+		<path class="st1" d="M22.04,11.46c-0.87,0.36-1.71,0.65-2.56,0.89c-0.03,0.01-0.07,0.02-0.1,0.03l-0.8-1.46l-1.06,1.92
+			c-0.14,0.03-0.28,0.05-0.42,0.08c-1.02,0.18-2.09,0.31-3.17,0.35L16.9,7.9l1.55-2.8h0.07l1.64,2.95L22.04,11.46z"/>
+		<line class="st2" x1="32.12" y1="5.11" x2="31.57" y2="5.11"/>
+		<path class="st0" d="M31.52,5.14c-0.84,0.99-2.29,2.94-4.22,4.87c-1.21,1.23-2.61,2.45-4.17,3.43c-0.77,0.49-1.58,0.92-2.44,1.29
+			c-0.67,0.29-1.38,0.53-2.11,0.72c-0.98,0.25-1.93,0.43-2.82,0.55c-1.26,0.18-2.43,0.24-3.46,0.24h-0.01l1.35-2.45
+			c1.08-0.04,2.28-0.15,3.55-0.38c0.01,0,0.01,0,0.01,0c0.57-0.11,1.15-0.23,1.75-0.39c0.23-0.05,0.46-0.12,0.68-0.19
+			c0.94-0.26,1.82-0.58,2.65-0.93c1.93-0.8,3.61-1.84,5.02-2.88C29.23,7.58,30.66,6.1,31.52,5.14z"/>
+	</g>
+	<g>
+		<path class="st0" d="M33.29,0.82l3.11,2.35c0.2,0.15,0.44,0.23,0.69,0.23c0.55-0.04,1.11-0.08,1.66-0.12
+			C36.96,2.19,35.18,1.09,33.39,0L33.29,0.82z"/>
+		<path class="st0" d="M39.14,1.78c0-0.19-0.61-0.43-0.61-0.43c-0.31-0.22-0.72-0.24-1.05-0.06l-4.72,2.57l-0.64,0.02l-0.84-0.73
+			l-0.02,0.6l0.57,0.64l0.96,0.16L39.14,1.78"/>
+	</g>
+	<g>
+		<path class="st0" d="M2.08,19.82v-1.03H1.67v-0.37h1.29v0.37H2.55v1.03H2.08z"/>
+		<path class="st0" d="M7.28,19.82l0.61-1.4h0.46l0.61,1.4H8.48l-0.45-1.18h0.18l-0.45,1.18H7.28z M7.64,19.57l0.12-0.34h0.64
+			l0.12,0.34H7.64z"/>
+		<path class="st0" d="M13.46,19.82v-1.4h0.39l0.71,0.85h-0.18v-0.85h0.46v1.4h-0.39l-0.71-0.85h0.18v0.85H13.46z"/>
+		<path class="st0" d="M19.44,19.82v-0.29l0.78-0.91l0.06,0.16h-0.82v-0.37h1.23v0.29l-0.78,0.91l-0.06-0.16h0.87v0.37H19.44z"/>
+		<path class="st0" d="M25.13,19.82l0.61-1.4h0.46l0.61,1.4h-0.49l-0.45-1.18h0.18l-0.45,1.18H25.13z M25.5,19.57l0.12-0.34h0.64
+			l0.12,0.34H25.5z"/>
+		<path class="st0" d="M31.32,19.82v-1.4h0.39l0.71,0.85h-0.18v-0.85h0.46v1.4h-0.39l-0.71-0.85h0.18v0.85H31.32z"/>
+		<path class="st0" d="M37.34,19.82v-1.4h0.47v1.4H37.34z"/>
+		<path class="st0" d="M42.31,19.82l0.61-1.4h0.46l0.61,1.4h-0.49l-0.45-1.18h0.18l-0.45,1.18H42.31z M42.68,19.57l0.12-0.34h0.64
+			l0.12,0.34H42.68z"/>
+	</g>
+</g>
+</svg>
+    </div> -->
+
+    
+    <!-- Footer with contact info -->
+    <div class="footer">
+        <h3>For more information contact</h3>
+        <div class="contact-info">
+            Principal, Civil Aviation Training Centre<br>
+            Tel: (+255-22) 2844437/39, (+255-22) 284443, Fax: (255-22) 2844128<br>JNIA Terminal I Building, P.O. BOX 18157, DAR ES SALAAM, TANZANIA<br>
+            Email: catc@tcaa.go.tz, tcatc@tcatc.ac.tz<br>
+            Website: www.tcaa.go.tz, www.tcatc.ac.tz
+        </div>
+    </div>
+
+    <script>
+        // Complete course data organized by sections
+        const courseData = [
+        {
+    title: "AIR TRAFFIC MANAGEMENT SECTION",
+    courses: [
+        { sn: "1", title: "Basic Aerodrome Control-Abinitio", duration: "6 Weeks", dates: ["08 Sept - 17 Oct 2025", "02 Mar - 10 Apr 2026", "01 Jun - 10 Jul 2026"] },
+        { sn: "2", title: "Air Traffic Management-Aerodrome Control NTA Level 5", duration: "1 Year", dates: ["On request"] },
+        { sn: "3", title: "Aerodrome Control", duration: "16 weeks", dates: ["15 Sept 2025 - 02 Jan 2026", "13 Apr - 31 Jul 2026"] },
+        { sn: "4", title: "Approach Control Procedural", duration: "9 Weeks", dates: ["23 Feb 2025 - 24 Apr 2026", "26 Jan - 27 Mar 2026", "27 Apr - 26 Jun 2026"] },
+        { sn: "5", title: "Approach Control Procedural Refresher(STP)", duration: "2 Weeks", dates: ["On request"] },
+        { sn: "6", title: "Approach Control Surveillance", duration: "7 Weeks", dates: ["01 Sept - 17 Oct 2025"] },
+        { sn: "7", title: "Approach Control Surveillance conversion", duration: "3 Weeks", dates: ["On request"] },
+        { sn: "8", title: "Area Control Procedural", duration: "9 Weeks", dates: ["04 Aug - 03 Oct 2025", "09 Mar - 08 May 2026"] },
+        { sn: "9", title: "Area Control Procedural-Refresher", duration: "3 weeks", dates: ["On request"] },
+        { sn: "10", title: "Area Control Surveillance", duration: "7 Weeks", dates: ["27 Oct - 12 Dec 2025"] },
+        { sn: "11", title: "Area Control Surveillance conversion", duration: "3 weeks", dates: ["On request"] },
+        { sn: "12", title: "ATM Supervisory Management", duration: "3 Weeks", dates: ["02 Feb - 20 Mar 2026"] },
+        { sn: "13", title: "Performance Based Navigation", duration: "5 Days", dates: ["09 Mar - 27 Mar 2026", "28 Jul - 01 Aug 2025", "05 - 09 Jan 2026", "16 - 20 Mar 2026"] },
+        { sn: "14", title: "Human Factors in Aviation", duration: "5 Days", dates: ["26 - 30 Jan 2026", "27 Apr - 01 May 2026"] },
+        { sn: "15", title: "Pre- Search and Rescue", duration: "3 Weeks", dates: ["12 Jan - 31 Jan 2026", "01 - 19 Jun 2026"] }
+    ],
+    bgImage: "https://images.unsplash.com/photo-1723059518530-1feec72f2771?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+},
+{
+    title: "AERONAUTICAL INFORMATION MANAGEMENT SECTION",
+    courses: [
+        { sn: "1", title: "Aeronautical Information Officer", duration: "9 Weeks", dates: ["28 Jul - 26 Sept 2025", "03 Nov - 02 Jan 2026"] },
+        { sn: "2", title: "Aeronautical Information Officer (TCAA)", duration: "1 Year", dates: ["On Request"] },
+        { sn: "3", title: "AIS Supervisory Management", duration: "3 Weeks", dates: ["22 Sept - 10 Oct 2025", "02 - 21 Mar 2026"] },
+        { sn: "4", title: "AIS Digital Cartography", duration: "9 Weeks", dates: ["06 Oct - 05 Dec 2025", "06 Apr - 05 Jun 2026"] },
+        { sn: "5", title: "AIP AD Management and Provision", duration: "3 Weeks", dates: ["02 - 20 Feb 2026"] },
+        { sn: "6", title: "Pre-Basic Procedure Design", duration: "4 Weeks", dates: ["13 Oct - 08 Nov 2025", "11 May - 05 Jun 2026"] },
+        { sn: "7", title: "Aeronautical Charts Management", duration: "2 Weeks", dates: ["08 - 19 Sept 2025", "02 - 13 Feb 2026"] },
+        { sn: "8", title: "Transition from AIS to AIM", duration: "5 Days", dates: ["13 - 17 Oct 2025", "09 - 13 Mar 2026"] },
+        { sn: "9", title: "Aeronautical Mobile Service", duration: "5 Weeks", dates: ["03 - 07 Nov 2025", "09 - 13 Mar 2026"] },
+        { sn: "10", title: "AIS Refresher", duration: "2 Weeks", dates: ["03 - 14 Nov 2025", "06 - 17 Jan 2026"] },
+        { sn: "11", title: "NOTAM Information Management", duration: "2 Weeks", dates: ["07 - 18 Jul 2025", "01 - 12 Jun 2026"] },
+        { sn: "12", title: "Drone Pilot (Basic) Training", duration: "4 Weeks", dates: ["14 Jul - 08 Aug 2025", "08 Sep - 03 Oct 2025", "12 Jan - 06 Feb 2026", "09 Mar - 03 Apr 2026"] }
+    ],
+    bgImage: "https://images.unsplash.com/photo-1568952433726-3896e3881c65?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHRlY2hub2xvZ3l8ZW58MHx8MHx8fDA%3D"
+},
+{
+    title: "AVIATION SECURITY SECTION",
+    courses: [
+        { sn: "1", title: "ICAO Behaviour Detection Course", duration: "5 Days", dates: ["11 - 15 Aug 2025"] },
+        { sn: "2", title: "ICAO Risk Management Workshop", duration: "5 Days", dates: ["15 - 19 Sept 2025"] },
+        { sn: "3", title: "National Civil Aviation Security Quality Control Programme workshop", duration: "5 Days", dates: ["06 - 10 Oct 2025"] },
+        { sn: "4", title: "ICAO Crisis Management Workshop", duration: "5 Days", dates: ["03 - 07 Nov 2025"] },
+        { sn: "5", title: "ICAO AVSEC Managers Course", duration: "7 Days", dates: ["27 Nov - 05 Dec 2025"] },
+        { sn: "6", title: "ICAO Airport Security Supervisors", duration: "5 Days", dates: ["09 - 13 Feb 2026"] },
+        { sn: "7", title: "ICAO Basic Aviation Security Course", duration: "5 Days", dates: ["23 - 27 Mar 2026"] },
+        { sn: "8", title: "ICAO Air Cargo and Mail Security Course", duration: "5 Days", dates: ["13 - 17 Apr 2026"] },
+        { sn: "9", title: "Basic Screeners Course", duration: "10 Days", dates: ["On request"] },
+        { sn: "10", title: "Screeners Refresher Course", duration: "5 Days", dates: ["On request"] }
+    ],
+    bgImage: "https://plus.unsplash.com/premium_photo-1661963205109-8c5e039c448d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+},
+{
+    title: "COMMUNICATION NAVIGATION AND SURVEILLANCE SECTION",
+    courses: [
+        { sn: "1", title: "ATSEP Competency Based Initial Training - Basic", duration: "10 Weeks", dates: ["06 Oct - 12 Dec 2025"] },
+        { sn: "2", title: "VHF Communication - Internal(TCAA)", duration: "6 Weeks", dates: ["06 Oct - 14 Nov 2025"] },
+        { sn: "3", title: "ATSEP Competency Based Initial Training - Qualification", duration: "10 Weeks", dates: ["09 Jan - 13 Mar 2026"] },
+        { sn: "4", title: "VHF Radio Maintenance (Telerad)", duration: "2 Weeks", dates: ["01 - 19 Dec 2025"] },
+        { sn: "5", title: "VHF Radio Maintenance (Jotron)", duration: "2 weeks", dates: ["13 - 24 Apr 2026"] },
+        { sn: "6", title: "CNS/ATM Concept", duration: "5 Days", dates: ["12 - 16 Jan 2026"] },
+        { sn: "7", title: "ADS-B Refresher Course", duration: "2 weeks", dates: ["15 - 26 Sept 2025"] },
+        { sn: "8", title: "ATM System Maintenance (Topsky) with basic Linux commands", duration: "4 Weeks", dates: ["02 - 27 Mar 2026"] }
+    ],
+    bgImage: "https://images.unsplash.com/photo-1611507873005-1d3d25de7ff0?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fHJhZGFyfGVufDB8fDB8fHww"
+},
+{
+    title: "COURSE DEVELOPMENT UNIT SECTION",
+    courses: [
+        { sn: "1", title: "Instructors Training Course", duration: "2 Weeks", dates: ["11 - 22 Aug 2025", "10 - 21 Nov 2025", "09 - 20 Feb 2026", "18 - 29 May 2026"] },
+        { sn: "2", title: "On the Job Training Instructors (OJTI)", duration: "2 Weeks", dates: ["01 - 12 Sept 2025", "02 - 13 Mar 2026"] },
+        { sn: "3", title: "Training Instructors Course (TIC)", duration: "5 Days", dates: ["01 - 05 Sept 2025"] },
+        { sn: "4", title: "ICAO GSI - Personnel licensing (PEL)", duration: "15 Days", dates: ["13 - 31 Oct 2025"] },
+        { sn: "5", title: "Training Instructors Course (TIC) Part 2-ICAO Course", duration: "5 Days", dates: ["17 - 21 Jul 2023"] },
+        { sn: "6", title: "On-the-Job Training Instructor (OJTI)-STP -ICAO Course", duration: "5 Days", dates: ["03 - 07 Nov 2025"] },
+        { sn: "7", title: "ICAO Government Safety Inspector Airworthiness - Air Operator and Approved Maintenance Organization Certification (GSI AIR EN)", duration: "15 Days", dates: ["22 Sep - 10 Oct 2025"] },
+        { sn: "8", title: "Training Development Course (TDC)", duration: "10 Days", dates: ["13 - 24 Oct 2025"] },
+        { sn: "9", title: "CAA Approval of Training Organization", duration: "5 Days", dates: ["25 - 29 Aug 2025"] },
+        { sn: "10", title: "Air Cargo Safety Management (ACSM EN): Virtual Classroom", duration: "5 days", dates: ["13 - 17 Oct 2025"] }
+    ],
+    bgImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJhaW5pbmd8ZW58MHx8MHx8fDA%3D"
+},
+{
+    title: "AIRPORT OPERATIONS SECTION",
+    courses: [
+        { sn: "1", title: "Basic Airport Operations", duration: "4 Weeks", dates: ["04 - 29 Aug 2025", "03 - 28 Nov 2025", "05 - 30 Jan 2026", "01 - 27 Jun 2026"] },
+        { sn: "2", title: "Advanced Airport Operations", duration: "2 Weeks", dates: ["08 - 19 Sept 2025", "16 - 27 Feb 2026", "15 - 26 Jun 2026"] },
+        { sn: "3", title: "Apron Management", duration: "4 Weeks", dates: ["04 - 29 Aug 2025", "06 Oct - 31 Oct 2025", "02 - 27 Mar 2026", "01 - 27 Jun 2026"] },
+        { sn: "4", title: "Aircraft Marshaller Refresher", duration: "2 Weeks", dates: ["13 - 24 Oct 2025", "13 - 24 Apr 2026", "25 May - 05 Jun 2026"] },
+        { sn: "5", title: "Passenger Boarding Bridge", duration: "2 Weeks", dates: ["29 Sep - 10 Oct 2025", "12 - 23 Jan 2026", "11 - 22 May 2026"] },
+        { sn: "6", title: "Customer Service", duration: "5 Working days", dates: ["15 - 19 Sept 2025", "09 - 13 Feb 2026", "25 - 29 May 2026"] },
+        { sn: "7", title: "Flight Operations/Flight Dispatchers", duration: "16 Weeks", dates: ["03 Nov - 20 Feb 2026", "13 Apr - 31 Jul 2026"] },
+        { sn: "8", title: "Radio Telephony Procedures", duration: "2 Weeks", dates: ["15 - 26 Sept 2025", "19 - 30 Jan 2026", "18 - 29 May 2026"] },
+        { sn: "9", title: "Quality Management System", duration: "5 Working Days", dates: ["21 - 25 Jul 2025", "06 - 10 Oct 2025", "19 - 23 Jan 2026", "11 - 15 May 2026"] },
+        { sn: "10", title: "QMS Internal Auditors Training", duration: "5 Working Days", dates: ["28 Jul - 01 Aug 2025", "13 - 17 Oct 2025", "26 - 30 Jan 2026", "18 - 22 May 2026"] },
+        { sn: "11", title: "Safety Management System", duration: "5 Working days", dates: ["25 - 29 Aug 2025", "24 - 28 Nov 2025", "16 - 20 Feb 2026", "20 - 24 Apr 2026", "08 - 12 Jun 2026"] },
+        { sn: "12", title: "Flight Operations/Flight Dispatch Refresher", duration: "5 Working Days", dates: ["On request"] },
+        { sn: "13", title: "Dangerous Goods Regulations (DGR) for Accepting DG Consignments - Initial and Recurrent", duration: "5 Working days", dates: ["On request"] },
+        { sn: "14", title: "Dangerous Goods Regulations (DGR) for Preparing DG Consignments - Initial and Recurrent", duration: "6 Working days", dates: ["On request"] },
+        { sn: "15", title: "Dangerous Goods Regulations (DGR) for cabin crew members- Initial and Recurrent", duration: "2 Working days", dates: ["On request"] },
+        { sn: "16", title: "Dangerous Goods Regulations (DGR) for flight crew members- Initial and Recurrent", duration: "2 Working days", dates: ["On request"] },
+        { sn: "17", title: "Dangerous Goods Regulations (DGR) for flight Operations Personnel and Dispatchers- Initial and Recurrent", duration: "2 Working days", dates: ["On request"] },
+        { sn: "18", title: "Dangerous Goods Regulations (DGR) for handling and loading personnel- Initial and Recurrent", duration: "2 Working days", dates: ["On request"] },
+        { sn: "19", title: "Dangerous Goods Regulations (DGR) for passenger handling personnel- Initial and Recurrent", duration: "2 Working days", dates: ["On request"] },
+        { sn: "20", title: "Dangerous Goods Regulations (DGR) for General Cargo Accepting and Processing Personnel- Initial and Recurrent", duration: "2 Working days", dates: ["On request"] },
+        { sn: "21", title: "Dangerous Goods Regulations (DGR) for security screening personnel- Initial and Recurrent", duration: "2 Working days", dates: ["On request"] },
+        { sn: "22", title: "Perishable Cargo Regulations", duration: "2 Working days", dates: ["On request"] },
+        { sn: "23", title: "Live Animals Regulations", duration: "2 Working days", dates: ["On request"] },
+        { sn: "24", title: "Unit Load Devices Regulations", duration: "5 Working days", dates: ["On request"] },
+        { sn: "25", title: "Basic Cargo Operations", duration: "5 Working days", dates: ["On request"] },
+        { sn: "26", title: "Crew Resource Management", duration: "5 Working days", dates: ["On request"] },
+        { sn: "27", title: "Crew Resource Management Awareness", duration: "2 Working days", dates: ["On request"] },
+        { sn: "28", title: "Safety Management System Awareness", duration: "2 Working days", dates: ["On request"] },
+        { sn: "29", title: "Ground Service Equipment (GSE) Initial", duration: "2 Working days", dates: ["On request"] },
+        { sn: "30", title: "Ground Service Equipment (GSE) Recurrent", duration: "1 Working day", dates: ["On request"] },
+        { sn: "31", title: "Aerodrome Planning, Operations and Maintenance", duration: "6 Working days", dates: ["On request"] },
+        { sn: "32", title: "Heliport Design and Construction", duration: "5 Working Days", dates: ["On request"] },
+        { sn: "33", title: "Basic Airside Safety", duration: "2 working days", dates: ["On request"] },
+        { sn: "34", title: "Turn Round Coordinator", duration: "3 working days", dates: ["On request"] }
+    ],
+    bgImage: "https://plus.unsplash.com/premium_photo-1661351490701-bc7e60ee4492?q=80&w=1192&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+}
+        ];
+
+        // Function to create course cards with all data
+        function createCourseCards() {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+
+            courseData.forEach(section => {
+                const card = document.createElement('div');
+                card.className = 'glass-card';
+
+                let coursesHTML = '';
+                section.courses.forEach(course => {
+                    let datesHTML = '';
+                    course.dates.forEach((date, index) => {
+                        const isOnRequest = date.toLowerCase().includes('on request') || 
+                                          date.toLowerCase().includes('on request');
+                        datesHTML += `
+                            <div class="date-item ${isOnRequest ? 'on-request' : ''}">
+                                ${date}
+                            </div>
+                        `;
+                    });
+
+                    coursesHTML += `
+                        <tr>
+                            <td style="text-align:center">${course.sn}</td>
+                            <td>${course.title}</td>
+                            <td>${course.duration}</td>
+                            <td><div class="date-group">${datesHTML}</div></td>
+                        </tr>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="card-header" style="background-image: url('${section.bgImage}')">
+                        <h1>${section.title}</h1>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center">S/N</th>
+                                    <th>Course Title</th>
+                                    <th>Duration</th>
+                                    <th>Dates</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${coursesHTML}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Initialize with animations
+        document.addEventListener('DOMContentLoaded', () => {
+            createCourseCards();
+            
+            // Animate cards on load
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + (index * 100));
+            });
+            
+            // Add hover effects to rows
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.style.boxShadow = '0 0.25rem 0.75rem rgba(0, 0, 0, 0.1)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.style.boxShadow = 'none';
+                });
+            });
+        });
+    </script>
+<style>
+    /* Replace the body background with the Unsplash image */
+    html, body {
+        background: linear-gradient(to bottom, #293B9005 1%, #293B9020);
+        background-size: cover;
+		  background-opacity: 0.2;
+        min-height: 100vh;
+    }
+
+    /* Glassmorphism effect for cards */
+    .glass-card {
+        background: #293B9030 !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+    }
+
+    /* Glassmorphism effect for table container */
+    .table-container {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(5px) !important;
+        -webkit-backdrop-filter: blur(5px) !important;
+    }
+
+    /* Adjust table row backgrounds for better visibility */
+    tbody tr:nth-child(even) {
+        background-color: rgba(248, 250, 253, 0.5) !important;
+    }
+
+    tbody tr:nth-child(odd) {
+        background-color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    tbody tr:hover {
+        background-color: rgba(230, 240, 255, 0.7) !important;
+    }
+
+    /* Adjust header overlay for better readability */
+    .card-header::before {
+        background: rgba(41, 59, 144, 0.7) !important;
+    }
+
+
+</style>
+</body>
+</html>
